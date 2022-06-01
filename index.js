@@ -40,26 +40,34 @@ const keywords = [
   "buru",
 ];
 
-const channels = ["854190665687760909", "939298335796379648"];
+const channels = ["854190665687760909", "981668691940884540"];
 
-client.on("message", (msg) => {
-  if (msg.author.bot) return;
+client.on("messageCreate", (msg) => {
+  if (msg.author.bot) return; // Ignore bots
 
+  //#region Check if message is in a channel
   if (channels.includes(msg.channelId)) {
-    keywords.every((keyword) => {
+    //#region Check if message contains a keyword
+    for (const keyword of keywords) {
       if (msg.content.toLowerCase().includes(keyword)) {
         msg.reply("wkwk");
-        return false;
+        break;
       }
-    });
+    }
+    //#endregion
+    return; // Exit the callback function
   }
+  //#endregion
 
+  //#region Special case
   if (
     msg.author.username === "BleedBlue" &&
     msg.author.discriminator === "5754"
   ) {
     msg.reply("bacot ji ah wkwk");
+    return; // Exit the callback function
   }
+  //#endregion
 });
 
 client.login(process.env.BOT_TOKEN);
