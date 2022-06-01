@@ -37,6 +37,7 @@ const keywords = [
   "main",
   "mainkan",
   "maen",
+  "buru",
 ];
 
 const channels = ["854190665687760909", "939298335796379648"];
@@ -45,9 +46,10 @@ client.on("message", (msg) => {
   if (msg.author.bot) return;
 
   if (channels.includes(msg.channelId)) {
-    keywords.forEach((keyword) => {
-      if (msg.content.toLocaleLowerCase().includes(keyword)) {
+    keywords.every((keyword) => {
+      if (msg.content.toLowerCase().includes(keyword)) {
         msg.reply("wkwk");
+        return false;
       }
     });
   }
@@ -63,7 +65,9 @@ client.on("message", (msg) => {
 client.login(process.env.BOT_TOKEN);
 
 http
-  .createServer((_req, _res) => {
-    console.log("Server running");
+  .createServer((_req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.write("OK");
+    res.end();
   })
   .listen(process.env.PORT || 8080);
