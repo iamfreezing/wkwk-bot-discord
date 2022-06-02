@@ -1,46 +1,34 @@
-const dotenv = require("dotenv");
-const { Client, Intents } = require("discord.js");
+require("dotenv").config();
+
 const http = require("http");
+const { Client, Intents } = require("discord.js");
+const { ref, child, get } = require("firebase/database");
+const { db } = require("./firebase");
 
-dotenv.config();
+//#region Get data from firebase
+async function loadData() {
+  const dbRef = ref(db, process.env.FIREBASE_DATABASE_CHILD);
+  const keywords = await get(child(dbRef, "/keywords")).then((snapshot) => snapshot.val());
+  const channels = await get(child(dbRef, "/channels")).then((snapshot) => snapshot.val());
 
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  return { keywords, channels };
+}
+
+let keywords = [];
+let channels = [];
+
+loadData().then((data) => {
+  keywords = data.keywords;
+  channels = data.channels;
 });
+//#endregion
 
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
+//#region Discord.js event handlers
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
-
-const keywords = [
-  "kuy",
-  "skuy",
-  "sekuy",
-  "skut",
-  "sekut",
-  "pinjem id",
-  "rede",
-  "ayo",
-  "-",
-  "gow",
-  "mari",
-  "gas",
-  "gaz",
-  "login",
-  "in game",
-  "maleman",
-  "hayu",
-  "masa",
-  "ngakak",
-  "wk",
-  "@",
-  "main",
-  "mainkan",
-  "maen",
-  "buru",
-];
-
-const channels = ["854190665687760909", "981668691940884540"];
 
 client.on("messageCreate", (msg) => {
   if (msg.author.bot) return; // Ignore bots
@@ -50,7 +38,7 @@ client.on("messageCreate", (msg) => {
     //#region Check if message contains a keyword
     for (const keyword of keywords) {
       if (msg.content.toLowerCase().includes(keyword)) {
-        msg.reply("wkwk");
+        msg.reply("wkwksss");
         break;
       }
     }
@@ -60,15 +48,13 @@ client.on("messageCreate", (msg) => {
   //#endregion
 
   //#region Special case
-  if (
-    msg.author.username === "BleedBlue" &&
-    msg.author.discriminator === "5754"
-  ) {
+  if (msg.author.username === "BleedBlue" && msg.author.discriminator === "5754") {
     msg.reply("bacot ji ah wkwk");
     return; // Exit the callback function
   }
   //#endregion
 });
+//#endregion
 
 client.login(process.env.BOT_TOKEN);
 
