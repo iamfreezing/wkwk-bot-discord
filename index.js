@@ -32,6 +32,7 @@ client.on("ready", () => {
 
 client.on("messageCreate", (msg) => {
   if (msg.author.bot) return; // Ignore bots
+  if (msg.author.username === "bariqmbani" && msg.author.discriminator === "5616") return // Ignore myself
 
   //#region Check if message is in a channel
   if (channels.includes(msg.channelId)) {
@@ -43,14 +44,13 @@ client.on("messageCreate", (msg) => {
       }
     }
     //#endregion
-    return; // Exit the callback function
   }
   //#endregion
 
   //#region Special case
   if (msg.author.username === "BleedBlue" && msg.author.discriminator === "5754") {
+    console.log(msg.author)
     msg.reply("bacot ji ah wkwk");
-    return; // Exit the callback function
   }
   //#endregion
 });
