@@ -34,6 +34,13 @@ client.on("messageCreate", (msg) => {
   if (msg.author.bot) return; // Ignore bots
   if (msg.author.username === "bariqmbani" && msg.author.discriminator === "5616") return // Ignore myself
 
+  //#region Special case
+  if (msg.author.username === "BleedBlue" && msg.author.discriminator === "5754") {
+    console.log(msg.author)
+    return msg.reply("bacot ji ah wkwk");
+  }
+  //#endregion
+
   //#region Check if message is in a channel
   if (channels.includes(msg.channelId)) {
     //#region Check if message contains a keyword
@@ -44,13 +51,6 @@ client.on("messageCreate", (msg) => {
       }
     }
     //#endregion
-  }
-  //#endregion
-
-  //#region Special case
-  if (msg.author.username === "BleedBlue" && msg.author.discriminator === "5754") {
-    console.log(msg.author)
-    msg.reply("bacot ji ah wkwk");
   }
   //#endregion
 });
