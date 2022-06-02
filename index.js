@@ -38,7 +38,7 @@ client.on("messageCreate", (msg) => {
     //#region Check if message contains a keyword
     for (const keyword of keywords) {
       if (msg.content.toLowerCase().includes(keyword)) {
-        msg.reply("wkwksss");
+        msg.reply("wkwk");
         break;
       }
     }
